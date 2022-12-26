@@ -4,6 +4,9 @@
 #include "Eigen/Dense"
 #include "measurement_package.h"
 
+// using Eigen::MatrixXd;
+// using Eigen::VectorXd;
+
 class UKF {
  public:
   /**
@@ -41,6 +44,20 @@ class UKF {
    */
   void UpdateRadar(MeasurementPackage meas_package);
 
+  void SigmaPointPrediction(const double delta_t);
+
+  void GenerateSigmaPointsAugmented();
+
+  void PredictMeanAndCovariance();
+
+  void PredictRadarMeasurement();
+
+  void PredictLidarMeasurement();
+
+  void UpdateStateRadar(const Eigen::VectorXd& z);
+
+  void UpdateStateLidar(const Eigen::VectorXd& z);
+
 
   // initially set to false, set to true in first call of ProcessMeasurement
   bool is_initialized_;
@@ -50,6 +67,29 @@ class UKF {
 
   // if this is false, radar measurements will be ignored (except for init)
   bool use_radar_;
+
+  // Timestamping
+  double t_previous_;
+
+  // Normalized Innovation Squared for Radar
+  double NIS_Radar_;
+
+  // Normalized Innovation Squared for Lidar
+  double NIS_Lidar_;
+
+  // Working variables for Radar NIS calculation
+  double total_Radar_measurements;
+  double NIS_Radar_95;
+  double Radar_95_perc; 
+  double NIS_Radar_5;
+  double Radar_5_perc;
+
+  // Working variables for Lidar NIS calculation
+  double total_Lidar_measurements;
+  double NIS_Lidar_95;
+  double Lidar_95_perc; 
+  double NIS_Lidar_5;
+  double Lidar_5_perc;
 
   // state vector: [pos1 pos2 vel_abs yaw_angle yaw_rate] in SI units and rad
   Eigen::VectorXd x_;
@@ -95,6 +135,67 @@ class UKF {
 
   // Sigma point spreading parameter
   double lambda_;
+
+  // set measurement dimension, radar can measure r, phi, r_vel
+  int n_z_R_;
+
+  // set measurement dimension, lidar can measure px, py
+  int n_z_L_;
+ 
+  // Radar Measurment noise covariance matrix
+  Eigen::MatrixXd R;
+
+  // Lidar Measurement noise covariance matrix
+  Eigen::MatrixXd L;
+
+  /**
+   * Intermeditate matrices
+   */
+
+
+
+   // create augmented mean vector
+  Eigen::VectorXd x_aug;
+
+  // create augmented state covariance
+  Eigen::MatrixXd P_aug;
+
+  // Sigma points matrix -necessary to have 2 x state vector size + 1 sigma points
+  Eigen::MatrixXd Xsig;
+
+  // Create sigma point matrix
+  Eigen::MatrixXd Xsig_aug;
+
+  // Sigma points in radar measurement space
+  Eigen::MatrixXd Zsig_r;
+
+  // Mean predicted radar measurement
+  Eigen::VectorXd z_pred_r;
+
+  // Radar measurement covariance matrix S_r
+  Eigen::MatrixXd S_r;
+
+  // Sigma points in lidar measurement space
+  Eigen::MatrixXd Zsig_l;
+
+  // Mean predicted lidar measurement
+  Eigen::VectorXd z_pred_l;
+
+  // Lidar measurement covariance matrix S_l
+  Eigen::MatrixXd S_l;
+
+/**
+ * Working matrices
+ */
+
+  // Predicted sigma points
+  Eigen::MatrixXd Xsig_pred;
+
+  // Predicted mean state vector
+  Eigen::VectorXd x;
+
+  // Predicted covariance matrix
+  Eigen::MatrixXd P;
 };
 
 #endif  // UKF_H
