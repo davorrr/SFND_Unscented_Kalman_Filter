@@ -1,7 +1,13 @@
 # SFND Unscented Kalman Filter
 
-<center><img src="media/ukf_highway_tracked.gif" width="700" height="400"  ></center>
-<center>Simulated environment</center>
+
+<p align="center">
+<img src="media/ukf_highway_tracked.gif" width="700" height="400" />
+</p>
+<p align="center">
+Simulated environment
+</p>
+
 
 This project implements an Unscented Kalman Filter to estimate the state of multiple cars on a highway using noisy lidar and radar measurements. The goal is to keep RMSE values below the tolerances.
 
@@ -44,9 +50,12 @@ The sections below discuss how each of topics of interest was addressed in the P
 
 ## FP.1 Intro into the simulation
 
-<center><img src="media/ukf_highway.png" width="700" height="400"  ></center>
-<center>Simulated vehicles position</center>
-
+<p align="center">
+<img src="media/ukf_highway.png" width="700" height="400" />
+</p>
+<p align="center">
+Simulated vehicles position
+</p>
 
 `main.cpp` is using `highway.h` to create a straight 3 lane highway environment with 3 traffic cars and the main ego car at the center. 
 The viewer scene is centered around the ego car and the coordinate system is relative to the ego car as well. The ego car is green while the 
@@ -64,9 +73,13 @@ The Kalman Filter represents our distributions by Gaussians and iterates across 
 #### FP.2.1 Measurement Update
 Each new measurement update reduces the uncertainty of the position of the object we are trying to localize. New position will have a mean higher then the previous positions mean and higher then the measurement mean because with each measurement we are adding information. 
 
-<center><img src="media/Measurement_update.PNG" width="569" height="271"  ></center>
-<center>Measurement Update</center>
 
+<p align="center">
+<img src="media/Measurement_update.PNG" width="569" height="271" />
+</p>
+<p align="center">
+Measurement Update
+</p>
 
 Measurement always give us a more focused estimate (higher mean and narrower covariance) of our actual position, regardless how far away it is from our current position information.
 
@@ -74,39 +87,53 @@ Measurement always give us a more focused estimate (higher mean and narrower cov
 #### FP.2.2 Motion Update
 Motion, since it has it's own uncertainty (we are never 100% certain in our actuall trajectory) will add uncertainty to our initial one and our end position will have an increased uncertainty when compared to the starting point.
 
-<center><img src="media/Motion_update.PNG" width="730" height="409"  ></center>
-<center>Motion Update</center>
-
+<p align="center">
+<img src="media/Motion_update.PNG" width="730" height="409"  />
+</p>
+<p align="center">
+Motion Update
+</p>
 
 #### FP.2.3 Kalman Prediction
 
 If we do estimation in higher dimensional spaces Kalman filter is able to implicitly provide us with the velocity of the object and then use this velocity estimate to make a prediction on the objects future position. While sensor itself might be only able to detect position, Kalman Filter infers the velocity information by observing multiple positions. This makes Kalman Filter excellent in tracking applications.
 
-<center><img src="media/Kalman_prediction.PNG" width="735" height="510"></center>
-<center>Kalman Prediction</center>
+<p align="center">
+<img src="media/Kalman_prediction.PNG" width="735" height="510"/>
+</p>
+<p align="center">
+Kalman Prediction
+</p>
 
 #### FP.2.4 Kalman Filter in Sensor Fusion
 
 Kalman Filter can use multiple sensors input when implementing object tracking which makes it very useful in Sensor Fusion applications.
 
-
-<center><img src="media/Two_step_estimation.PNG" width="925" height="450"></center>
-<center>Two step estimation problem</center>
-
+<p align="center">
+<img src="media/Two_step_estimation.PNG" width="925" height="450"/>
+</p>
+<p align="center">
+Two step estimation problem
+</p>
 
 This approach can be generalized to multiple sensors and this is where Kalman Filter application in Sensor Fusion comes forward. We can use Lidar and Radar sensor, which will update our position information asynchronously as the new measurment sample becomes available from one or the other.
 
-
-<center><img src="media/Multiple_sensors.PNG" width="959" height="539"></center>
-<center>Kalman Filtering with multiple sensors</center>
-
+<p align="center">
+<img src="media/Multiple_sensors.PNG" width="959" height="539" />
+</p>
+<p align="center">
+Kalman Filtering with multiple sensors
+</p>
 
 As the system work it will first do a Prediction using the information available and then it will do a Measurement update from one of the sensors which will give us a more precise infomation about the object we are tracking.
 
 
-<center><img src="media/Kalman_cycle.png" width="2690" height="1398"  ></center>
-<center>Object tracking</center>
-
+<p align="center">
+<img src="media/Kalman_cycle.png" width="2690" height="1398" />
+</p>
+<p align="center">
+Object tracking
+</p>
 
 #### FP.2.5 Extended Kalman Filter
 
@@ -135,16 +162,23 @@ For the purpose of predicting the position of the tracked object in the future, 
 
 Each model introduces its assumptions with the goal of simplifying the calculation of the motion. In the Unscented Kalman Filter we will use the CTRV, which assumes that the objects can move straigth and that they can also turn with a constant turn rate and velocity magnitude. If we would use a simpler model, for example a Constant Velocity model, this model would be sufficiently precise as long as the the Vehicle is moving in a straigth line. As soon as the Vehicle starts turning the model would start to introduce errors since it would predict the trajectory incorrectly and the pose estimation would tend to result outside of the actually driven circle.
 
-<center><img src="media/CTRV.png" width="1178" height="1038"  ></center>
-<center>CTRV Motion Diagram</center>
 
+<p align="center">
+<img src="media/CTRV.png" width="1178" height="1038" />
+</p>
+<p align="center">
+CTRV Motion Diagram
+</p>
 
 With the CTRV model we will extend our state vector that until now had only position information by adding the the speed, yaw and the yaw rate.
 
 
-<center><img src="media/CTRV_State_Vector.PNG" width="235" height="216"  ></center>
-<center>CTRV State Vector</center>
-
+<p align="center">
+<img src="media/CTRV_State_Vector.PNG" width="235" height="216" />
+</p>
+<p align="center">
+CTRV State Vector
+</p>
 
 Process model consists from the deterministic part and the stochatic part. Stochastic part is used to model the uncertainty of the Motion model and for this we use a Noise Vector constisting of two independent scalar noise processes:
 * Longitudinal acceleration noise,
@@ -157,17 +191,21 @@ both normally distributed white noise processed with zero mean.
 
 To deal with motion and measurement models non-linearities, the UKF uses the Unscented Transformation. If our initial position of the object is described with a Gaussian, and our motion model is non-linear, the prediction of the position of the object in the future (t+1), that such a model would produce will be non-linear and it would not possible for it to be described with a Gaussian distribution anymore.
 
-
-<center><img src="media/Nonlinear_prediction.PNG" width="1138" height="720"  ></center>
-<center>Non-linear prediction</center>
-
+<p align="center">
+<img src="media/Nonlinear_prediction.PNG" width="1138" height="720" />
+</p>
+<p align="center">
+Non-linear prediction
+</p>
 
 The Unscented Transformation solves this problem by using Sigma Points. Basically we do not transform the entire state distribution through a non-linear fuction but instead we sample individual points on the distribution, the Sigma Points, and we transform them. The points are chosen around a mean state space in a certain relation to the standard deviation sigma of every state dimension, which is why they are called Sigma Points. After they are chose, the Sigma Points are introduced into the model. The model outputs the predicted sigma points which can be used to calculate the normal distribution. This will result in a approximation, but a relatively precise one.
 
-
-<center><img src="media/Sigma_points.PNG" width="958" height="538"  ></center>
-<center>Predicted state using sigma points</center>
-
+<p align="center">
+<img src="media/Sigma_points.PNG" width="958" height="538" />
+</p>
+<p align="center">
+Predicted state using sigma points
+</p>
 
 ### FP.3.3 UKF Roadmap
 
@@ -177,15 +215,23 @@ As discussed previously UKF pipeline also consists of a two phases:
 
 Only difference from the Kalman Filter and the Extended Kalman Filter is that in UKF the Prediction step needs to consider sigma points processing as well.
 
-<center><img src="media/UKF_roadmap.PNG" width="1203" height="694"  ></center>
-<center>UKF pipeline steps</center>
+<p align="center">
+<img src="media/UKF_roadmap.PNG" width="1203" height="694" />
+</p>
+<p align="center">
+UKF pipeline steps
+</p>
 
 #### FP.3.3.1 Prediction Step: Augmented Sigma Points Generation
 
 Starting point in the prediction step is generation of Sigma Points. At this point we have the posterior state Xk|k and the posterior covariance matrix Pk|k from the previous iteration and they represent the distribution of our current state for which we want to generate Sigma Points.
 
-<center><img src="media/Initial_state.PNG" width="1203" height="694"  ></center>
-<center>Posterior state</center>
+<p align="center">
+<img src="media/Initial_state.PNG" width="1203" height="694"  />
+</p>
+<p align="center">
+Posterior state
+</p>
 
 The number of sigma points depends on the state dimension. For a 5 dimensional state vector we will chose 11 sigma points. Sigma Points are calculated using the following equation:
 
@@ -196,26 +242,39 @@ Lambda is a design parameter that determines the position of the Sigma Points in
 
 It is important to note that our motion model introduces a noise vector as a non-linear effect and this has to be take into account when generating Sigma Points. 
 
-<center><img src="media/Process_model.PNG" width="1067" height="230"  ></center>
-<center>Complete motion model</center>
-
+<p align="center">
+<img src="media/Process_model.PNG" width="1067" height="230"  />
+</p>
+<p align="center">
+Complete motion model
+</p>
 
 To to this we will build the augmented state vector which will include the noise vector:
 
-<center><img src="media/Augmented_state_vector.PNG" width="244" height="338"  ></center>
-<center>Augmented State Vector</center>
+<p align="center">
+<img src="media/Augmented_state_vector.PNG" width="244" height="338" />
+</p>
+<p align="center">
+Augmented State Vector
+</p>
 
 and the augmented covariance matrix:
 
-<center><img src="media/Augmented_covariance.PNG" width="284" height="126"  ></center>
-<center>Augmented Covariance Matrix</center>
-
+<p align="center">
+<img src="media/Augmented_covariance.PNG" width="284" height="126" />
+</p>
+<p align="center">
+Augmented Covariance Matrix
+</p>
 
 where Q is the process noise covariance matrix. This will extend the number of states to 7 which means we will need to generate more Sigma Points, 15 in total:
 
-<center><img src="media/Sigma_points_aug.PNG" width="1282" height="630"  ></center>
-<center>Augmented Sigma Points Generation</center>
-
+<p align="center">
+<img src="media/Sigma_points_aug.PNG" width="1282" height="630" />
+</p>
+<p align="center">
+Augmented Sigma Points Generation
+</p>
 
 This has been implemented in the ```GenerateSigmaPointsAugmented() ``` function shown below>
 ```cpp 
@@ -251,10 +310,12 @@ void UKF::GenerateSigmaPointsAugmented(){
 
 After Augmented Sigma Points have been generated we need to introduce them into the motion model for the model to generate the predicted Sigma Points. The input in the process model will be 7-dimensional while output of the model will be 5-dimensional.
 
-
-<center><img src="media/Sigma_points_gen.PNG" width="1314" height="699"  ></center>
-<center>Augmented Sigma Points Prediction</center>
-
+<p align="center">
+<img src="media/Sigma_points_gen.PNG" width="1314" height="699" />
+</p>
+<p align="center">
+Augmented Sigma Points Prediction
+</p>
 
 Code snippet that implements Augmented Sigma Points Prediction is shown below:
 ```cpp
@@ -305,20 +366,24 @@ void UKF::SigmaPointPrediction(const double delta_t_){
 ```
 What is important to notice is that, in order to protect from division with zero, in the code we use different equations depending if the yaw velocity is 0 or not. If the yaw velocity is 0, we will use the simplified motion model:
 
-
-<center><img src="media/yaw_zero.PNG" width="789" height="202"></center>
-<center>Simplified Motion Model</center>
-
+<p align="center">
+<img src="media/yaw_zero.PNG" width="789" height="202"/>
+</p>
+<p align="center">
+Simplified Motion Model
+</p>
 
 #### FP.3.3.3 Prediction Step: Predicted Mean and Covariance
 
 
 After we have finished with the prediction of the Sigma Points we want to use them to calculate the mean and the covariance of the predicted state.
 
-
-<center><img src="media/Mean_cov_pred.PNG" width="1355" height="682"></center>
-<center>Prediction of Mean and Covariance</center>
-
+<p align="center">
+<img src="media/Mean_cov_pred.PNG" width="1355" height="682"/>
+</p>
+<p align="center">
+Prediction of Mean and Covariance
+</p>
 
 Equation for Mean Prediction:
 
@@ -363,8 +428,12 @@ With this step we are finished with the Prediction phase of the UKF pipeline and
 #### FP.3.3.4 Update Step: Measurement Prediction
 In this step we need to transform the Predicted state into the measurement space by using the measurement model. Because of this, we need to consider what kind of sensor produced the measurement and use the approapriate measurement model.
 
-<center><img src="media/Measurement_prediction.PNG" width="1296" height="699"></center>
-<center>Measurement Prediction process</center>
+<p align="center">
+<img src="media/Measurement_prediction.PNG" width="1296" height="699"/>
+</p>
+<p align="center">
+Measurement Prediction process
+</p>
 
 The problem we have here is very similar to the problem we had in the prediction phase - we need to transform a distribution, through a non-linear function, which means we can apply the same Unscented Transformation approach that we used in the prediction phase. To simplify the problem we will use a popular shotcut and we will skip the generation of Sigma Points. Instead we will simply reuse the already generated ones. We will also skip the augmentation step because in this case noise has a purely additive effect where previosly it had a non-linear effect so we had to take it into consideration.
 
@@ -378,8 +447,12 @@ where the equations modeling the measurement are:
 
 Now we can calculate the measurement prediction:
 
-<center><img src="media/Pred_meas.PNG" width="439" height="287"></center>
-<center>Predicted Measurement</center>
+<p align="center">
+<img src="media/Pred_meas.PNG" width="439" height="287"/>
+</p>
+<p align="center">
+Predicted Measurement
+</p>
 
 using the predicted measurement mean equation:
 
@@ -585,8 +658,12 @@ They represent the facts that our tracked object will have the longitudinal acce
 
 With these values we achieved the goals of the project that px, py, vx, vy output coordinates must have an RMSE <= [0.30, 0.16, 0.95, 0.70] after running the simulation for longer than 1 second.
 
-<center><img src="media/param.PNG" width="987" height="488"></center>
-<center>RMSE of output coordinates</center>
+<p align="center">
+<img src="media/param.PNG" width="987" height="488" />
+</p>
+<p align="center">
+RMSE of output coordinates
+</p>
 
 There is another set of noise parameters that describe the measurement uncertainty but they are usually given together in the sensor manuals so we can include them directly into the measurement model for each sensor.
 
