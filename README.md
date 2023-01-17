@@ -129,7 +129,7 @@ As the system work it will first do a Prediction using the information available
 
 
 <p align="center">
-<img src="media/Kalman_cycle.png" width="1076" height="560" />
+<img src="media/Kalman_cycle.png" width="717" height="373" />
 </p>
 <p align="center">
 Object tracking
@@ -201,7 +201,7 @@ Non-linear prediction
 The Unscented Transformation solves this problem by using Sigma Points. Basically we do not transform the entire state distribution through a non-linear fuction but instead we sample individual points on the distribution, the Sigma Points, and we transform them. The points are chosen around a mean state space in a certain relation to the standard deviation sigma of every state dimension, which is why they are called Sigma Points. After they are chose, the Sigma Points are introduced into the model. The model outputs the predicted sigma points which can be used to calculate the normal distribution. This will result in a approximation, but a relatively precise one.
 
 <p align="center">
-<img src="media/Sigma_points.PNG" width="958" height="538" />
+<img src="media/Sigma_points.PNG" width="638" height="358" />
 </p>
 <p align="center">
 Predicted state using sigma points
@@ -235,7 +235,7 @@ Posterior state
 
 The number of sigma points depends on the state dimension. For a 5 dimensional state vector we will chose 11 sigma points. Sigma Points are calculated using the following equation:
 
-<center><img src="media/Sigma_points_equation.PNG" width="601" height="347"  ></center>
+<center><img src="media/Sigma_points_equation.PNG" width="822" height="121"  ></center>
 
 
 Lambda is a design parameter that determines the position of the Sigma Points in relation to the mean state. The bigger the Lambda the further away from the mean state Sigma Points are.
@@ -243,7 +243,7 @@ Lambda is a design parameter that determines the position of the Sigma Points in
 It is important to note that our motion model introduces a noise vector as a non-linear effect and this has to be take into account when generating Sigma Points. 
 
 <p align="center">
-<img src="media/Process_model.PNG" width="1067" height="230"  />
+<img src="media/Process_model.PNG" width="5030" height="115"  />
 </p>
 <p align="center">
 Complete motion model
