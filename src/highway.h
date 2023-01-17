@@ -1,5 +1,6 @@
-/* \author Aaron Brown */
-// Handle logic for creating traffic on highway and animating it
+
+// #ifndef SFND_UNSCENTED_KALMAN_FILTER_SRC_HIGHWAY_H_
+// #define SFND_UNSCENTED_KALMAN_FILTER_SRC_HIGHWAY_H_
 
 #include "render/render.h"
 #include "sensors/lidar.h"
@@ -26,8 +27,8 @@ public:
 	bool visualize_radar = true;
 	bool visualize_pcd = false;
 	// Predict path in the future using UKF
-	double projectedTime = 0;
-	int projectedSteps = 0;
+	double projectedTime = 2;
+	int projectedSteps = 6;
 	// --------------------------------
 
 	Highway(pcl::visualization::PCLVisualizer::Ptr& viewer)
@@ -132,15 +133,16 @@ public:
 				tools.ground_truth.push_back(gt);
 				tools.lidarSense(traffic[i], viewer, timestamp, visualize_lidar);
 				tools.radarSense(traffic[i], egoCar, viewer, timestamp, visualize_radar);
-				tools.ukfResults(traffic[i],viewer, projectedTime, projectedSteps);
+				tools.ukfResults(traffic[i], viewer, projectedTime, projectedSteps);
 				VectorXd estimate(4);
-				double v  = traffic[i].ukf.x_(2);
-    			double yaw = traffic[i].ukf.x_(3);
+				double v  = traffic[i].ukf.x(2);
+    			double yaw = traffic[i].ukf.x(3);
     			double v1 = cos(yaw)*v;
     			double v2 = sin(yaw)*v;
-				estimate << traffic[i].ukf.x_[0], traffic[i].ukf.x_[1], v1, v2;
+				estimate << traffic[i].ukf.x[0], traffic[i].ukf.x[1], v1, v2;
 				tools.estimations.push_back(estimate);
-	
+				std::cout <<  traffic[i].position.x <<std::endl;
+				std::cout <<  traffic[i].ukf.x[0]<<std::endl;
 			}
 		}
 		viewer->addText("Accuracy - RMSE:", 30, 300, 20, 1, 1, 1, "rmse");
@@ -190,3 +192,5 @@ public:
 	}
 	
 };
+
+// #endif // SFND_UNSCENTED_KALMAN_FILTER_SRC_HIGHWAY_H_
