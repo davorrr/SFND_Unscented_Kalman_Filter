@@ -70,7 +70,7 @@ The Kalman Filter represents our distributions by Gaussians and iterates across 
 * Measurement Update
 * Motion Update
 
-#### FP.2.1 Measurement Update
+### FP.2.1 Measurement Update
 Each new measurement update reduces the uncertainty of the position of the object we are trying to localize. New position will have a mean higher then the previous positions mean and higher then the measurement mean because with each measurement we are adding information. 
 
 
@@ -84,7 +84,7 @@ Measurement Update
 Measurement always give us a more focused estimate (higher mean and narrower covariance) of our actual position, regardless how far away it is from our current position information.
 
 
-#### FP.2.2 Motion Update
+### FP.2.2 Motion Update
 Motion, since it has it's own uncertainty (we are never 100% certain in our actuall trajectory) will add uncertainty to our initial one and our end position will have an increased uncertainty when compared to the starting point.
 
 <p align="center">
@@ -94,7 +94,7 @@ Motion, since it has it's own uncertainty (we are never 100% certain in our actu
 Motion Update
 </p>
 
-#### FP.2.3 Kalman Prediction
+### FP.2.3 Kalman Prediction
 
 If we do estimation in higher dimensional spaces Kalman filter is able to implicitly provide us with the velocity of the object and then use this velocity estimate to make a prediction on the objects future position. While sensor itself might be only able to detect position, Kalman Filter infers the velocity information by observing multiple positions. This makes Kalman Filter excellent in tracking applications.
 
@@ -105,7 +105,7 @@ If we do estimation in higher dimensional spaces Kalman filter is able to implic
 Kalman Prediction
 </p>
 
-#### FP.2.4 Kalman Filter in Sensor Fusion
+### FP.2.4 Kalman Filter in Sensor Fusion
 
 Kalman Filter can use multiple sensors input when implementing object tracking which makes it very useful in Sensor Fusion applications.
 
@@ -135,7 +135,7 @@ As the system work it will first do a Prediction using the information available
 Object tracking
 </p>
 
-#### FP.2.5 Extended Kalman Filter
+### FP.2.5 Extended Kalman Filter
 
 Extended Kalman Filter extends the Kalman Filter by approximating the non-linear measurement function (from radar) using the Taylor extension with a linear function that enables us to use the Kalman Filter in case where we have a non-linear equations, coming from Radar measurements (they are in polar coordinates, and need to be transfered to Cartesian coordinate system, in which our movement model is defined).
 
@@ -222,7 +222,7 @@ Only difference from the Kalman Filter and the Extended Kalman Filter is that in
 UKF pipeline steps
 </p>
 
-#### FP.3.3.1 Prediction Step: Augmented Sigma Points Generation
+### FP.3.3.1 Prediction Step: Augmented Sigma Points Generation
 
 Starting point in the prediction step is generation of Sigma Points. At this point we have the posterior state Xk|k and the posterior covariance matrix Pk|k from the previous iteration and they represent the distribution of our current state for which we want to generate Sigma Points.
 
@@ -306,7 +306,7 @@ void UKF::GenerateSigmaPointsAugmented(){
 }
 ```
 
-#### FP.3.3.2 Prediction Step: Sigma Points Prediction
+### FP.3.3.2 Prediction Step: Sigma Points Prediction
 
 After Augmented Sigma Points have been generated we need to introduce them into the motion model for the model to generate the predicted Sigma Points. The input in the process model will be 7-dimensional while output of the model will be 5-dimensional.
 
@@ -373,7 +373,7 @@ What is important to notice is that, in order to protect from division with zero
 Simplified Motion Model
 </p>
 
-#### FP.3.3.3 Prediction Step: Predicted Mean and Covariance
+### FP.3.3.3 Prediction Step: Predicted Mean and Covariance
 
 
 After we have finished with the prediction of the Sigma Points we want to use them to calculate the mean and the covariance of the predicted state.
@@ -425,7 +425,7 @@ void UKF::PredictMeanAndCovariance(){
 ```
 With this step we are finished with the Prediction phase of the UKF pipeline and we can move onto the Update phase.
 
-#### FP.3.3.4 Update Step: Measurement Prediction
+### FP.3.3.4 Update Step: Measurement Prediction
 In this step we need to transform the Predicted state into the measurement space by using the measurement model. Because of this, we need to consider what kind of sensor produced the measurement and use the approapriate measurement model.
 
 <p align="center">
@@ -540,7 +540,7 @@ void UKF::PredictLidarMeasurement(){
 }
 ```
 
-#### FP.3.3.5 Update Step: State Update
+### FP.3.3.5 Update Step: State Update
 
 State update is the last step in the UKF pipeline. In this step we use the actual measurement values for the first time. What we needed from the begining was the time of the measurement so we could predict to the correct time and the sensor type so we could use the correct measurement model in the measurement prediction step. The update calculation closes the processing chain and produces the updated state mean:
 
