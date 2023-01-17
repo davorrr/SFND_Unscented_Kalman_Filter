@@ -379,7 +379,7 @@ Simplified Motion Model
 After we have finished with the prediction of the Sigma Points we want to use them to calculate the mean and the covariance of the predicted state.
 
 <p align="center">
-<img src="media/Mean_cov_pred.PNG" width="667" height="341"/>
+<img src="media/Mean_cov_pred.PNG" width="376" height="651"/>
 </p>
 <p align="center">
 Prediction of Mean and Covariance
