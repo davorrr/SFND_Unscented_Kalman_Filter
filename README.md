@@ -129,7 +129,7 @@ As the system work it will first do a Prediction using the information available
 
 
 <p align="center">
-<img src="media/Kalman_cycle.png" width="2690" height="1398" />
+<img src="media/Kalman_cycle.png" width="1076" height="560" />
 </p>
 <p align="center">
 Object tracking
@@ -164,7 +164,7 @@ Each model introduces its assumptions with the goal of simplifying the calculati
 
 
 <p align="center">
-<img src="media/CTRV.png" width="1178" height="1038" />
+<img src="media/CTRV.png" width="589" height="519" />
 </p>
 <p align="center">
 CTRV Motion Diagram
@@ -192,7 +192,7 @@ both normally distributed white noise processed with zero mean.
 To deal with motion and measurement models non-linearities, the UKF uses the Unscented Transformation. If our initial position of the object is described with a Gaussian, and our motion model is non-linear, the prediction of the position of the object in the future (t+1), that such a model would produce will be non-linear and it would not possible for it to be described with a Gaussian distribution anymore.
 
 <p align="center">
-<img src="media/Nonlinear_prediction.PNG" width="1138" height="720" />
+<img src="media/Nonlinear_prediction.PNG" width="569" height="360" />
 </p>
 <p align="center">
 Non-linear prediction
@@ -216,7 +216,7 @@ As discussed previously UKF pipeline also consists of a two phases:
 Only difference from the Kalman Filter and the Extended Kalman Filter is that in UKF the Prediction step needs to consider sigma points processing as well.
 
 <p align="center">
-<img src="media/UKF_roadmap.PNG" width="1203" height="694" />
+<img src="media/UKF_roadmap.PNG" width="601" height="347" />
 </p>
 <p align="center">
 UKF pipeline steps
@@ -227,7 +227,7 @@ UKF pipeline steps
 Starting point in the prediction step is generation of Sigma Points. At this point we have the posterior state Xk|k and the posterior covariance matrix Pk|k from the previous iteration and they represent the distribution of our current state for which we want to generate Sigma Points.
 
 <p align="center">
-<img src="media/Initial_state.PNG" width="1203" height="694"  />
+<img src="media/Initial_state.PNG" width="601" height="347"  />
 </p>
 <p align="center">
 Posterior state
@@ -235,7 +235,7 @@ Posterior state
 
 The number of sigma points depends on the state dimension. For a 5 dimensional state vector we will chose 11 sigma points. Sigma Points are calculated using the following equation:
 
-<center><img src="media/Sigma_points_equation.PNG" width="1203" height="694"  ></center>
+<center><img src="media/Sigma_points_equation.PNG" width="601" height="347"  ></center>
 
 
 Lambda is a design parameter that determines the position of the Sigma Points in relation to the mean state. The bigger the Lambda the further away from the mean state Sigma Points are.
@@ -252,7 +252,7 @@ Complete motion model
 To to this we will build the augmented state vector which will include the noise vector:
 
 <p align="center">
-<img src="media/Augmented_state_vector.PNG" width="244" height="338" />
+<img src="media/Augmented_state.PNG" width="244" height="338" />
 </p>
 <p align="center">
 Augmented State Vector
@@ -270,7 +270,7 @@ Augmented Covariance Matrix
 where Q is the process noise covariance matrix. This will extend the number of states to 7 which means we will need to generate more Sigma Points, 15 in total:
 
 <p align="center">
-<img src="media/Sigma_points_aug.PNG" width="1282" height="630" />
+<img src="media/Sigma_points_aug.PNG" width="641" height="315" />
 </p>
 <p align="center">
 Augmented Sigma Points Generation
@@ -311,7 +311,7 @@ void UKF::GenerateSigmaPointsAugmented(){
 After Augmented Sigma Points have been generated we need to introduce them into the motion model for the model to generate the predicted Sigma Points. The input in the process model will be 7-dimensional while output of the model will be 5-dimensional.
 
 <p align="center">
-<img src="media/Sigma_points_gen.PNG" width="1314" height="699" />
+<img src="media/Sigma_points_gen.PNG" width="657" height="335" />
 </p>
 <p align="center">
 Augmented Sigma Points Prediction
@@ -379,7 +379,7 @@ Simplified Motion Model
 After we have finished with the prediction of the Sigma Points we want to use them to calculate the mean and the covariance of the predicted state.
 
 <p align="center">
-<img src="media/Mean_cov_pred.PNG" width="1355" height="682"/>
+<img src="media/Mean_cov_pred.PNG" width="667" height="341"/>
 </p>
 <p align="center">
 Prediction of Mean and Covariance
@@ -429,7 +429,7 @@ With this step we are finished with the Prediction phase of the UKF pipeline and
 In this step we need to transform the Predicted state into the measurement space by using the measurement model. Because of this, we need to consider what kind of sensor produced the measurement and use the approapriate measurement model.
 
 <p align="center">
-<img src="media/Measurement_prediction.PNG" width="1296" height="699"/>
+<img src="media/Measurement_prediction.PNG" width="648" height="350"/>
 </p>
 <p align="center">
 Measurement Prediction process
