@@ -243,7 +243,7 @@ Lambda is a design parameter that determines the position of the Sigma Points in
 It is important to note that our motion model introduces a noise vector as a non-linear effect and this has to be take into account when generating Sigma Points. 
 
 <p align="center">
-<img src="media/Process_model.PNG" width="530" height="115"  />
+<img src="media/Process_model.PNG" width="795" height="173"  />
 </p>
 <p align="center">
 Complete motion model
