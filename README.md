@@ -552,7 +552,7 @@ and the updated state covariance matrix:
 
 and these equations are exactly the same as for the standard Kalman Filter. Only difference here is how we calculate the Kalman Gain:
 
-<center><img src="media/update_cov.PNG" width="292" height="77"></center>
+<center><img src="media/kalman_gain.PNG" width="292" height="77"></center>
 
 because for this we need to use the cross-corelation matrix between the predicted sigma points in the state space and the predicted sigma points in the measurement space:
 
